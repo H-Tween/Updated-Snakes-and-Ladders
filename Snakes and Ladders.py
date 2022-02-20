@@ -182,7 +182,7 @@ def setColour2(colourChoice):
 
 
 def Counter():
-    global counterLabel, counter
+    global counterLabel, counter, player1Total, player2Total
     if vs == "Player":
         if counter == 2:
             counter = 1
@@ -240,18 +240,14 @@ def chow():
     root.destroy()
 
 def Facts():
-    fact = ["Russia has 11 times zones", "Bats have eco-location", "Snakes smell with their tongue", "Snakes have hundreds of ribs", "Snakes shed their skin", "Ladder accidents are common", "Chris Argyris invented the ladder"]
+    fact = ["Russia has 11 time zones", "Bats have echo-location", "Snakes smell with their tongue", "Snakes have hundreds of ribs", "Snakes shed their skin", "Ladder accidents are common", "Chris Argyris invented the ladder"]
     randomNumber = random.randint(1, len(fact))
     #print(fact[randomNumber])
-    factsLabel = Label(root, text = "Cool Facts:\n%s" % (fact[randomNumber-1]),  font = ("Calibri", 40)) #+ typingPrint(fact[randomNumber-1]) ############################problem
+    factsLabel = Label(root, text = "Cool Facts:\n%s" % (fact[randomNumber-1]),  font = ("Calibri", 40))
     factsLabel.place(x=1010, y=300, height = 200, width = 900)
 
     
-def typingPrint(text):
-  for character in text:
-    sys.stdout.write(character)                     ##########################################
-    sys.stdout.flush()
-    time.sleep(0.05)
+
 
 def Counter_Create():
     global filenamePlayer1, myCanvas, player1
@@ -273,7 +269,7 @@ def Counter_Create1():
 def movePlayer1():
     global myCanvas, player1, player1direction
     if player1 == [0, 0]:
-        movePiece2()
+        movePiece1()
     elif (player1[0] == 9 and player1[1] % 2 != 0) or (player1[0] == 0 and player1[1] % 2 == 0): #if x = 9 and y = even it moves up and the same for the other side (reaches end of board)
         myCanvas.move('p1', 0, -80) #moves the counter up
         player1[1] = player1[1] - 1 #sets the y in array to 1 less so it moves up
@@ -371,11 +367,219 @@ def ladders():
 
 
 
-##def Chance():                                                         #### a piece on the board, if a player roles the same number twice
+def ChanceCreate():
+    tile = rgbToColour((255, 255, 255))
+    coordinates = [(6*80), (5*80), (6*80)+80, (5*80)+80]
+    myCanvas.create_rectangle(coordinates, fill=tile, outline=tile)
+    myCanvas.create_text((6*tilewidth)+(tilewidth/2), (5*tilewidth)+(tilewidth/2), text="47", font='Calibri 20')
+
+    tile = rgbToColour((255, 255, 255))
+    coordinates = [(1*80), (6*80), (1*80)+80, (6*80)+80]
+    myCanvas.create_rectangle(coordinates, fill=tile, outline=tile)
+    myCanvas.create_text((1*tilewidth)+(tilewidth/2), (6*tilewidth)+(tilewidth/2), text="39", font='Calibri 20')
+
+    tile = rgbToColour((255, 255, 255))
+    coordinates = [(7*80), (0*80), (7*80)+80, (0*80)+80]
+    myCanvas.create_rectangle(coordinates, fill=tile, outline=tile)
+    myCanvas.create_text((7*tilewidth)+(tilewidth/2), (0*tilewidth)+(tilewidth/2), text="93", font='Calibri 20')
+
+def ChanceRules():
+    global dice, randomNumb, player1direction
+    listOfChancesGood = ["Move 2 spaces forward", "Move 3 spaces forward", "Move 4 spaces forward", "Move 5 spaces forward", "Move 6 spaces forward", "Move 10 spaces forward"]
+    listOfChancesBad = ["Move 2 spaces back", "Move 3 spaces back", "Move 4 spaces back", "Move 5 spaces back", "Move 6 spaces back", "Move 10 spaces back",]
+    Good = random.randint(0, len(listOfChancesGood)-1)
+    Bad = random.randint(0, len(listOfChancesBad)-1)
+    randomNumb = random.randint(1,2)
+    print(randomNumb)
+    c = "You have landed on a Chance Card! \n" + "Fortunetly the chance card is Good! \n" + listOfChancesGood[Good]
+    d = "You have landed on a Chance Card! \n" + "Unfortunetly the chance card is Bad! \n" + listOfChancesBad[Bad]
+    if randomNumb == 1:    # list of good chances
+        messagebox.showinfo("Player 1", c)
+        if Good == 0:
+            dice = 2
+            move1()
+        if Good == 1:
+            dice = 3
+            move1()
+        if Good == 2:
+            dice = 4
+            move1()
+        if Good == 3:
+            dice = 5
+            move1()
+        if Good == 4:
+            dice = 6
+            move1()
+        if Good == 5:
+            dice = 10
+            move1()
+    if randomNumb == 2:
+        messagebox.showinfo("Player 1", d)
+        if Bad == 0:
+            dice = 2
+            move1Back()
+        if Bad == 1:
+            dice = 3
+            move1Back()
+        if Bad == 2:
+            dice = 4
+            move1Back()
+        if Bad == 3:
+            dice = 5
+            move1Back()
+        if Bad == 4:
+            dice = 6
+            move1Back()
+        if Bad == 5:
+            dice = 10
+            move1Back()
+
+def ChanceRules2():
+    global dice, randomNumb, player2direction
+    listOfChancesGood = ["Move 2 spaces forward", "Move 3 spaces forward", "Move 4 spaces forward", "Move 5 spaces forward", "Move 6 spaces forward", "Move 10 spaces forward"]
+    listOfChancesBad = ["Move 2 spaces back", "Move 3 spaces back", "Move 4 spaces back", "Move 5 spaces back", "Move 6 spaces back", "Move 10 spaces back",]
+    Good = random.randint(0, len(listOfChancesGood)-1)
+    Bad = random.randint(0, len(listOfChancesBad)-1)
+    randomNumb = random.randint(1,2)
+    print(randomNumb)
+    c = "You have landed on a Chance Card! \n" + "Fortunetly the chance card is Good! \n" + listOfChancesGood[Good]
+    d = "You have landed on a Chance Card! \n" + "Unfortunetly the chance card is Bad! \n" + listOfChancesBad[Bad]
+    if randomNumb == 1:    # list of good chances
+        if vs == "Computer":
+            messagebox.showinfo("Computer", c)
+        else:
+            messagebox.showinfo("Player 2", c)
+        if Good == 0:
+            dice = 2
+            move2jump()
+        if Good == 1:
+            dice = 3
+            move2jump()
+        if Good == 2:
+            dice = 4
+            move2jump()
+        if Good == 3:
+            dice = 5
+            move2jump()
+        if Good == 4:
+            dice = 6
+            move2jump()
+        if Good == 5:
+            dice = 10
+            move2jump()
+    if randomNumb == 2:
+        if vs == "Computer":
+            messagebox.showinfo("Computer", d)
+        else:
+            messagebox.showinfo("Player 2", d)
+        if Bad == 0:
+            dice = 2
+            move2Back()
+        if Bad == 1:
+            dice = 3
+            move2Back()
+        if Bad == 2:
+            dice = 4
+            move2Back()
+        if Bad == 3:
+            dice = 5
+            move2Back()
+        if Bad == 4:
+            dice = 6
+            move2Back()
+        if Bad == 5:
+            dice = 10
+            move2Back()
+
+
+
+##def move1Back():
+##    if player1 == [1, 6]:
+##        if Bad == 0:
+##            player1 = [3, 6]
+##            myCanvas.move('p1', 160, 0)
+##            player1direction = player1direction * -1
+##            movePiece1()
+##        if Bad == 1:
+##            player1 = [4, 6]
+##        if Bad == 2:
+##            player1 = [5, 6]
+##        if Bad == 3:
+##            player1 = [6, 6]
+##        if Bad == 4:
+##            player1 = [7, 6]
+##        if Bad == 5:
+##            player1 = 
+            
+        
+def movePlayer1Back():
+    global myCanvas, player1, player1direction
+    if player1 == [0, 0]:
+        movePiece1()
+    elif (player1[0] == 9 and player1[1] % 2 == 0) or (player1[0] == 0 and player1[1] % 2 != 0): #if x = 9 and y = even it moves up and the same for the other side (reaches end of board)
+        print (player1direction)
+        player1direction = player1direction * -1 #changes the direction the counter moves
+        print (player1direction)
+        myCanvas.move('p1', 0, 80) #moves the counter down
+        player1[1] = player1[1] + 1 #sets the y in array to 1 more so it moves down
+    else:
+        myCanvas.move('p1', -80*player1direction, 0) #moves counter left and right
+        player1[0] = player1[0] - player1direction #gives the array the correct position
+    move1Back()
+
+def move1Back():
+    global dice, player1direction                                                             #for i in range(dice): #moves the player by the number the dice rolled
+    if dice > 0:
+        dice = dice - 1
+        myCanvas.after(200, movePlayer1Back)
+    else:
+        movePiece1()
+    if dice == 0 and vs == "Player":
+        rollButton["state"] = NORMAL
+    if dice == 0 and vs == "Computer":
+        rollButton1["state"] = NORMAL
+
+
+def movePlayer2Back():
+    global myCanvas, player2, player2direction
+    if player2 == [0, 0]:
+        movePiece2()
+    elif (player2[0] == 9 and player2[1] % 2 == 0) or (player2[0] == 0 and player2[1] % 2 != 0): #if x = 9 and y = even it moves up and the same for the other side (reaches end of board)
+        print (player2direction)
+        player2direction = player2direction * -1 #changes the direction the counter moves
+        print (player2direction)
+        myCanvas.move('p2', 0, 80) #moves the counter down
+        player2[1] = player2[1] + 1 #sets the y in array to 1 more so it moves down
+    else:
+        myCanvas.move('p2', -80*player2direction, 0) #moves counter left and right
+        player2[0] = player2[0] - player2direction #gives the array the correct position
+    move2Back()
+
+def move2Back():
+    global dice, player2direction                                                             #for i in range(dice): #moves the player by the number the dice rolled
+    if dice > 0:
+        dice = dice - 1
+        myCanvas.after(200, movePlayer2Back)
+    else:
+        movePiece2()
+    if dice == 0 and vs == "Player":
+        rollButton["state"] = NORMAL
+    if dice == 0 and vs == "Computer":
+        rollButton1["state"] = NORMAL
+
+
+
+##def Chance():
+##    randomRow = random.randint(0, 9)
+##    randomColoumn = random.randint(0, 9)
+##    tile = rgbToColour((255, 255, 255))
+##    coordinates = [(randomColoumn*80), (randomRow*80), (randomColoumn*80)+80, (randomRow*80)+80]
+##    myCanvas.create_rectangle(coordinates, fill=tile, outline=tile)
+
 
 
 def movePiece1():                                                      
-    global player1, player1direction, rollButton, rollButton1
+    global player1, player1direction, rollButton, rollButton1, dice
     if player1 == [8, 9]:               # ladder1
         player1 = [9, 7]
         messagebox.showinfo("Ladder", "You have landed on a ladder!")
@@ -428,18 +632,26 @@ def movePiece1():
         myCanvas.move('p1', 160, 80)
         player1direction = player1direction * -1
     if player1 == [0, 0]:
+        dice = 0
+        messagebox.showinfo("Winner", "Player One Wins!")
+        messagebox.showinfo("End", "Click Quit to leave!")
         if vs == "Player":
             rollButton["state"] = DISABLED
         if vs == "Computer":
             rollButton1["state"] = DISABLED
-        messagebox.showinfo("Winner", "Player One Wins!")
-        messagebox.showinfo("End", "Click Quit to leave!")
+    if player1 == [7, 0]:
+        ChanceRules()
+    if player1 == [6, 5]:
+        ChanceRules()
+    if player1 == [1, 6]:
+        ChanceRules()
+        
 
 
         
 
 def movePiece2():                                                      
-    global player2, player2direction, rollButton, rollButton1
+    global player2, player2direction, rollButton, rollButton1, dice
     if player2 == [8, 9]:               # ladder1
         player2 = [9, 7]
         if vs == "Computer":
@@ -495,7 +707,7 @@ def movePiece2():
         player2direction = player2direction * -1
     if player2 == [3, 2]:               # snake4
         player2 = [1, 5]
-        if vs == "Computer":
+        if vs == "computer":
             messagebox.showinfo("Ladder", "Computer has landed on a snake!")
         else:
             messagebox.showinfo("Ladder", "You have landed on a snake!")
@@ -507,7 +719,7 @@ def movePiece2():
             messagebox.showinfo("Ladder", "Computer has landed on a ladder!")
         else:
             messagebox.showinfo("Ladder", "You have landed on a ladder!")
-        myCanvas.move('p1', 80, -80)
+        myCanvas.move('p2', 80, -80)
         player2direction = player2direction * -1
     if player2 == [4, 1]:               # snake5
         player2 = [7, 3]
@@ -518,125 +730,32 @@ def movePiece2():
         myCanvas.move('p2', 240, 160)
     if player2 == [1, 0]:               # snake6
         player2 = [3, 1]
-        if vs == "Computer":
+        if vs == "computer":
             messagebox.showinfo("Ladder", "Computer has landed on a snake!")
         else:
             messagebox.showinfo("Ladder", "You have landed on a snake!")
         myCanvas.move('p2', 160, 80)
         player2direction = player2direction * -1
     if player2 == [0, 0]:
+        dice = 0
+        messagebox.showinfo("Winner", "Player Two Wins!")
+        messagebox.showinfo("End", "Click Quit to leave!")
         if vs == "Computer":
             rollButton1["state"] = DISABLED
         else:
             rollButton["state"] = DISABLED
-        messagebox.showinfo("Winner", "Player Two Wins!")
-        messagebox.showinfo("End", "Click Quit to leave!")
+    if player2 == [7, 0]:
+        ChanceRules2()
+    if player2 == [6, 5]:
+        ChanceRules2()
+    if player2 == [1, 6]:
+        ChanceRules2()
         
         
 
 
 
-#def movePiece1():
 
-
-
-
-##def Movement():
-##    global total1, player1, player2, total2, direction
-##    if direction == 1:
-##        if player1[0] > 9:
-##            player1[0] = 9
-##            player1[1] = player1[1] -1
-##            player1[0] = player1[0] - (dice-1)
-##            direction = 2
-##            total1 = total1 + dice
-##            Counter_Create()
-##        else:
-##            player1[0] = player1[0] + dice
-##            total1 = total1 + dice
-##            Counter_Create()
-##    else:
-##        if player1[0] < 0:
-##            player1[0] = 0
-##            player1[1] = player1[1] -1
-##            player1[0] = player1[0] + (dice-1)
-##            direction = 1
-##            total1 = total1 + dice
-##            Counter_Create()
-##        else:
-##            player1[0] = player1[0] + dice
-##            total1 = total1 + dice
-##            Counter_Create()
-##            
-                
-                
-        
-
-
-
-
-
-
-
-    
-##    for x in range(dice):
-##        if counter == 1:
-##            if player1[0] > 9 or row == 2:
-##                player1[1] = player1[1]-1
-##                player1[0] = player1[0]-(x-1)
-##                total1 = total1+dice
-##                print("Player 1", total1)
-##                Counter_Create()
-##            elif player1[0] < 0 or row == 1:
-##                player1[0] = player1[0]+x
-##                total1 = total1+dice
-##                print("Player 1", total1)
-##                Counter_Create()
-        
-        
-##    if counter == 1:
-##        if player1[0] > 9:
-##            player1[1] = player1[1]-1
-##            player1[0] = player1[0]-(dice-1)
-##            total1 = total1+dice
-##            print("Player 1", total1)
-##            Counter_Create()
-##        else:
-##            player1[0] = player1[0]+dice
-##            total1 = total1+dice
-##            print("Player 1", total1)
-##            Counter_Create()
-##    else:
-##        if player2[0] > 9:
-##            player2[1] = player2[1]-1
-##            player2[0] = player2[0]-(dice-1)
-##            total2 = total2+dice
-##            print("Player 2", total2)
-##            Counter_Create()
-##        else:
-##            player2[0] = player2[0]+dice
-##            total2 = total2+dice
-##            print("Player 2", total2)
-##            Counter_Create()
-##            
-
-
-
-##def Counter_Create():
-##    global filenamePlayer1, myCanvas
-##    player1 = [0, 9]
-##    player1Coords = coordstoXY(player1)
-##    filenamePlayer1 = PhotoImage(file = "%s.png" % (player1Colour))
-##    myCanvas.create_image(player1Coords, image=filenamePlayer1)
-##    myCanvas.image = filenamePlayer1
-##
-##def Counter_Create2():
-##    global filenamePlayer2, myCanvas
-##    player2 = [0, 9]
-##    player2Coords = coordstoXY(player2)
-##    filenamePlayer2 = PhotoImage(file = "%s.png" % (player2Colour))
-##    myCanvas.create_image(player2Coords, image=filenamePlayer2)
-##    myCanvas.image = filenamePlayer2
 
 
 def coordstoXY1(coords):
@@ -647,45 +766,6 @@ def coordstoXY2(coords):
     coords = [(coords[0]*tilewidth)+(tilewidth/2)+10, (coords[1]*tilewidth)+(tilewidth/2)]
     return coords
 
-
-##def Counter_Movement1():
-##    global dice, x1, x2, y1, y2, tilewidth, coordinates, direction, count, temp
-##    if x1 >= 750:
-##        if temp == 1:
-##            y1 = y1-80
-##            temp = 2
-##        if temp == 2:
-##            direction = -1
-##            if count == 2:
-##                x1 = x1-(1*tilewidth)
-##            Counter_Create()
-##            count = count + 1
-##    elif x1 <= 30:
-##        if temp ==2:
-##            y1 = y1-80
-##            x1 = x1+(1*tilewidth)
-##            temp = 1
-##        if temp == 1:
-##            direction = 1
-##            if count ==1:
-##                x1 = x1+(1*tilewidth)
-##            Counter_Create()
-##            count = count-1
-##    elif direction == -1:
-##        x1 = x1-(1*tilewidth)
-##        Counter_Create()
-##    elif direction == 1:
-##        x1 = x1+(1*tilewidth)
-##        Counter_Create()
-
-
-
-    
-            
-
-#def Counter_Movement2():
-    
-    
 
 
 def Board():
@@ -699,7 +779,6 @@ def Board():
         purpleButton1.destroy()
         pinkButton1.destroy()
         title3.destroy()
- #  print(theme)
     background_label.destroy()
     filename1 = PhotoImage(file = "%s.png" % (theme))
     background_label1 = Label(root, image=filename1)
@@ -709,7 +788,7 @@ def Board():
     myCanvas.place(x=50, y=50)
 
     #coordinates = [(column*tilewidth), (row*tilewidth), (column*tilewidth)+tilewidth, (row*tilewidth)+tilewidth] # coordinates of each tile
-
+    
 
     for row in range(10): # for each row
         for column in range(10): # for each column
@@ -733,10 +812,11 @@ def Board():
                 number = 100-((column)+(row*10))#the number displayed within the box is 10x whe row it is in + the coloumn number. Then 100- flips the entire board into the correct position
             else:           #if the row is odd
                 number = 100-((10-column)+(row*10)-1) #the same happens again but the order is flipped as it goes in the reverse order
-            
+
             myCanvas.create_text((column*tilewidth)+(tilewidth/2), (row*tilewidth)+(tilewidth/2), text=number, font='Calibri 20')
     player1direction = 1
     player2direction = 1
+    ChanceCreate()
     Counter()
     Quit()
     Facts()
@@ -760,8 +840,6 @@ root.geometry('1920x1080')# creates a window
 Play()
 player1 = [0, 9]
 player2 = [0, 9]
-total1 = 0
-total2 = 0
 
 root.mainloop()
 
